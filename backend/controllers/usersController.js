@@ -11,7 +11,7 @@ const registerUser = async (req, res) => {
         if (!firstName || !lastName || !userName || !email || !password) {
             res.sendStatus(StatusCodes.BAD_REQUEST)
         }
-        const userExist = await User.find({ email: email })
+        const userExist = await User.findOne({ email: email })
         if (userExist) {
             res.status(StatusCodes.BAD_REQUEST).json({ message: "User already exist" })
         }
@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
             lastName,
             userName,
             email,
-            hashedPassword
+            password: hashedPassword
         })
         res.sendStatus(StatusCodes.CREATED)
     } catch (error) {
@@ -46,7 +46,8 @@ const loginUser = async (req, res) => {
         }
         const accessToken = jwt.sign({
             email,
-            "username": userExist.userName
+            "username": userExist.userName,
+            "id": userExist._id
         }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10m" })
         userExist.accessToken = accessToken
         userExist.save()
@@ -60,17 +61,17 @@ const loginUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { firstName, lastName, userName, email } = req.body
-        const userId = req.params
+        const userId = req.user
         if (!firstName || !lastName || !userName || !email) {
             return res.sendStatus(StatusCodes.BAD_REQUEST)
         }
-        await User.updateOne({ _id: userId }, {
+        const user = await User.updateOne({ _id: userId }, {
             firstName,
             lastName,
             userName,
             email
         })
-        res.sendStatus(StatusCodes.CREATED)
+        res.status(StatusCodes.CREATED).json({ user })
     } catch (error) {
         console.log(error)
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)

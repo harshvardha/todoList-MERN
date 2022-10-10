@@ -14,6 +14,9 @@ app.use(cors({
     origin: "*"
 }))
 
+app.use("/users", require("./routes/Users"))
+app.use("/tasks", require("./routes/Tasks"))
+
 mongoose.connection.once('open', () => {
     console.log("MONGO DB CONNECTED")
     app.listen(PORT, () => console.log(`Server listening at port ${PORT}`))
