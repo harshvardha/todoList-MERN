@@ -1,0 +1,29 @@
+.taskCard {
+    background-color: #ff5050;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.taskCard--about {
+    display: flex;
+    column-gap: 2rem;
+}
+
+.taskCard--duration {
+    display: flex;
+    justify-content: space-between;
+}
+
+.taskCard--subText {
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.taskCard--buttons {
+    display: flex;
+    column-gap: 10px;
+    justify-content: space-between;
+    margin-top: 10px;
+}

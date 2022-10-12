@@ -1,0 +1,39 @@
+.authentication {
+    background: #ff5050;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #b3b3b3;
+    border-radius: 10px;
+    padding: 50px;
+}
+
+.authentication--input {
+    display: flex;
+    flex-direction: column;
+    row-gap: 7px;
+    margin-bottom: 20px;
+}
+
+.authentication--buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    width: 25rem;
+    border: 1px solid #b3b3b3;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+button {
+    padding: 5px 25px;
+    border-radius: 5px;
+    font-weight: 500;
+}

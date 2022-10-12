@@ -1,0 +1,42 @@
+.tasks {
+    background-color: white;
+    min-width: 80rem;
+    min-height: 40rem;
+    border-radius: 10px;
+    border: 1px solid gray;
+}
+
+.tasks--header {
+    display: flex;
+    background-color: #ff5050;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#addTaskButton {
+    background-color: #ff5050;
+    display: flex;
+    align-items: center;
+    width: 85px;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+#addTaskIcon {
+    font-size: 50px;
+    border-radius: 30px;
+    height: 35px;
+    color: white;
+}
+
+.tasks--tasks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    column-gap: 20px;
+    padding: 10px;
+}
