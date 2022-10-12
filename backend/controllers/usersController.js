@@ -51,7 +51,7 @@ const loginUser = async (req, res) => {
         }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10m" })
         userExist.accessToken = accessToken
         userExist.save()
-        res.status(StatusCodes.OK).json({ accessToken })
+        res.status(StatusCodes.OK).json({ accessToken, "userId": userExist._id, "userName": userExist.userName })
     } catch (error) {
         console.log(error)
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)

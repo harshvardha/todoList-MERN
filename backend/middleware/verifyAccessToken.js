@@ -14,6 +14,7 @@ const verifyAccessToken = (req, res, next) => {
             process.env.ACCESS_TOKEN_SECRET,
             (error, decoded) => {
                 if (error) {
+                    console.log(error)
                     return res.sendStatus(StatusCodes.UNAUTHORIZED)
                 }
                 req.user = decoded.id

@@ -1,6 +1,7 @@
 const Task = require("../models/Tasks")
 const mongoose = require("mongoose")
 const { StatusCodes } = require("http-status-codes")
+const { compareSync } = require("bcrypt")
 require("dotenv").config()
 
 const createTask = async (req, res) => {
@@ -10,14 +11,14 @@ const createTask = async (req, res) => {
         if (!name || !startDate || !endDate || !description) {
             return res.sendStatus(StatusCodes.BAD_REQUEST)
         }
-        await Task.create({
+        const task = await Task.create({
             name,
             startDate: new Date(startDate),
-            endDate: new Date(endDate),
+            endDate: new Date(startDate),
             description,
             owner
         })
-        res.sendStatus(StatusCodes.CREATED)
+        res.status(StatusCodes.CREATED).json({ task })
     } catch (error) {
         console.log(error)
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -31,13 +32,14 @@ const updateTask = async (req, res) => {
         if (!name || !startDate || !endDate || !description) {
             return res.sendStatus(StatusCodes.BAD_REQUEST)
         }
-        await Task.updateOne({ _id: mongoose.Types.ObjectId(taskId) }, {
+        const updatedTask = {
             name,
-            startDate,
-            endDate,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
             description
-        })
-        res.sendStatus(StatusCodes.CREATED)
+        }
+        await Task.updateOne({ _id: mongoose.Types.ObjectId(taskId) }, updatedTask)
+        res.status(StatusCodes.CREATED).json({ updatedTask })
     } catch (error) {
         console.log(error)
         res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)

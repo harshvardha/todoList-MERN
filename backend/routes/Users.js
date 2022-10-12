@@ -10,6 +10,6 @@ const router = express.Router()
 
 router.post('/register', registerUser)
 router.post('/login', loginUser)
-router.post('/update/:userId', verifyAccessToken, updateUser)
+router.post('/update', verifyAccessToken, updateUser)
 
 module.exports = router
