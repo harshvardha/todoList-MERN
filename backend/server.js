@@ -1,23 +1,83 @@
-const mongoose = require("mongoose")
-const express = require("express")
-const cors = require("cors")
-require("dotenv").config()
+const { ApolloServer } = require("@apollo/server");
+const { startStandaloneServer } = require("@apollo/server/standalone");
+const { decodeBase64 } = require("bcryptjs");
+require("dotenv").config();
+const connectDB = require("./config/connectDB");
 
-const PORT = process.env.PORT || 5000
-const app = express()
-const connectDB = require("./config/dbConnect")
+connectDB(process.env.DATABASE_URI);
 
-connectDB()
+const typeDefs = `#graphql
+    type Query {
+        myTaskList: [TaskList!]!
+    }
 
-app.use(express.json())
-app.use(cors({
-    origin: "*"
-}))
+    type Mutation {
+        signUp(input: SignUpInput): AuthUser!
+        signIn(input: SignInInput): AuthUser!
+        createTaskList(title: String!): TaskList!
+    }
 
-app.use("/users", require("./routes/Users"))
-app.use("/tasks", require("./routes/Tasks"))
+    input SignInInput {
+        email: String!
+        password: String!
+    }
 
-mongoose.connection.once('open', () => {
-    console.log("MONGO DB CONNECTED")
-    app.listen(PORT, () => console.log(`Server listening at port ${PORT}`))
-})
+    input SignUpInput {
+        email: String!
+        password: String!
+        name: String!
+        avatar: String
+    }
+
+    type AuthUser {
+        user: User!
+        accessToken: String!
+    }
+
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+        avatar: String
+    }
+
+    type TaskList {
+        id: ID!
+        createdAt: String!
+        title: String!
+        progress: Float!
+        users: [User!]!
+    }
+
+    type Todo {
+        id: ID!
+        content: String!
+        isCompleted: Boolean!
+        taskList: TaskList!
+    }
+`;
+
+const resolvers = {
+    Query: {
+        myTaskList: () => {
+            return [];
+        }
+    },
+    Mutation: {
+        signup: async (parent, { input }) => {
+            const hashedPassword = await bcrypt.hash(input.password);
+            const user = {
+                ...input,
+                password: hashedPassword
+            }
+        },
+        signin: () => {
+
+        },
+        createTaskList: async (parent, { title }, { db, user }) => {
+            if (!user) {
+                throw new Error('Authentication Error');
+            }
+        }
+    }
+};
